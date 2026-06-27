@@ -124,6 +124,7 @@ function SelectedPuppy (){
   const $puppy = document.createElement("section");
   $puppy.innerHTML = `
   <h3>${selectedPuppy.name} #${selectedPuppy.id}</h3>
+  <img src=${selectedPuppy.imageUrl}>
   <h4>Breed: ${selectedPuppy.breed}</h4>
   <h4>Status: ${selectedPuppy.status}</h4>
   <h4>TeamID: ${selectedPuppy.teamId}</h4>
