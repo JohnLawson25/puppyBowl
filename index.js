@@ -179,15 +179,17 @@ const render = () => {
               <option value="Bench">Bench</option>
               <option value="Field">Field</option>
               </select>
-            <label> Prefered food: <label>
-            <select  name="food">
-              <option value="Default">Select</option>
-              <option value="Puppy Chow">Puppy Chow</option>
-              <option value="Mega Puppy Protein">Mega Puppy Protein</option>
-              <option value="Purinna ONE>Purinna One</option>
-            <label> ImageURL: <label>
-            <input type="text" name="add" />
-            <button type="submit">Add Puppy</button>
+              <label> Prefered food: <label>
+              <select  name="food">
+                <option value="Default">Select</option>
+                <option value="Puppy Chow">Puppy Chow</option>
+                <option value="Mega Puppy Protein">Mega Puppy Protein</option>
+                <option value="Purinna ONE">Purinna One</option>
+              </select>
+              <label>ImageURL: </label>
+              <input type="text" name="imgUrl" />
+              <button type="submit">Add Puppy</buton>
+            
         </form>
         </main>`
 
