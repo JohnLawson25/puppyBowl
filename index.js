@@ -173,6 +173,17 @@ const render = () => {
             <label> Breed: <label>
             <input type="text" name="add" />
             <label> Status: <label>
+            <select name="status">
+              <option value="Default">Select</option>
+              <option value="Bench">Bench</option>
+              <option value="Field">Field</option>
+              </select>
+            <label> Prefered food: <label>
+            <select  name="food">
+              <option value="Default">Select</option>
+              <option value="Puppy Chow">Puppy Chow</option>
+              <option value="Mega Puppy Protein">Mega Puppy Protein</option>
+              <option value="Purinna ONE>Purinna One</option>
             <label> ImageURL: <label>
             <input type="text" name="add" />
             <button type="submit">Add Puppy</button>
