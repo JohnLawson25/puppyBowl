@@ -1,0 +1,16 @@
+
+main {
+  display: grid;
+  border: 1px blue;
+}
+
+h1{
+    color:blueviolet;
+}
+h2{
+    color: goldenrod
+}
+
+.puppyList{
+    border: 1px black;
+}

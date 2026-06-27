@@ -1,11 +1,12 @@
 /*             Feel free to use this skeleton I have provided or delete everything and do your own thing!             */
 
-//If you would like to, you can create a variable to store the API_URL here.
-//This is optional. if you do not want to, skip this and move on.
+const API = "https://fsa-puppy-bowl.herokuapp.com/api/2605-FTB-ET-WEB-FT-John"
 
 /////////////////////////////
 /*This looks like a good place to declare any state or global variables you might need*/
-
+//State
+let puppies = [];
+let selectedPuppy;
 ////////////////////////////
 
 /**
@@ -14,8 +15,19 @@
  * Instead, this function should be keeping our state up to date
  */
 const fetchAllPlayers = async () => {
-  //TODO
+  try{
+    const response = await fetch(API + "/players")
+    const result = await response.json();
+    puppies = result.data;
+  //console.log(response)
+  console.log(puppies)
+  }
+  catch(error){
+    console.log(error)
+  }
 };
+
+
 
 /**
  * Fetches a single player from the API.
@@ -28,7 +40,18 @@ const fetchAllPlayers = async () => {
  * Unless we know the id of the player we are trying to fetch, we cannot call fetchSinglePlayer()
  */
 const fetchSinglePlayer = async (playerId) => {
-  //TODO
+  
+  try{
+    const response = await fetch(API + "/players/" + playerId);
+    const result = await response.json();
+    console.log(result)
+    selectedPuppy = result.data.player;
+  
+    render()
+  }
+  catch(error){
+    console.log(error)
+  }
 };
 
 /**
@@ -65,6 +88,54 @@ const removePlayer = async (playerId) => {
   //TODO
 };
 
+
+//Components
+function puppyListItem(puppy){
+  const $li = document.createElement("li");
+    if(selectedPuppy && puppy.id === selectedPuppy.id) {
+      $li.classList.add("selected");
+    } 
+
+    $li.innerHTML = `
+    <a href="#selected">${puppy.name}</a>
+    `;
+
+    $li.addEventListener("click", () => fetchSinglePlayer(puppy.id));
+    return $li;
+}
+
+function puppyList(){
+  const $ul = document.createElement("ul")
+  $ul.classList.add("puppies");
+  console.log(puppies);
+  const $puppies = puppies.players.map(puppyListItem);
+  $ul.replaceChildren(...$puppies);
+
+  return $ul;
+}
+
+function SelectedPuppy (){
+  if(!selectedPuppy){
+    const $p = document.createElement("p");
+    $p.textContent = "Select a Player to see more.";
+    return $p;
+  };
+
+  const $puppy = document.createElement("section");
+  $puppy.innerHTML = `
+  <h3>${selectedPuppy.name} #${selectedPuppy.id}</h3>
+  <h4>Breed: ${selectedPuppy.breed}</h4>
+  <h4>Status: ${selectedPuppy.status}</h4>
+  <h4>TeamID: ${selectedPuppy.teamId}</h4>
+  <button type="submit">Remove from Roster</button>
+  `;
+  
+
+  return $puppy;
+};
+
+
+
 /**
  * Updates html to display a list of all players or a single player page.
  *
@@ -82,7 +153,34 @@ const removePlayer = async (playerId) => {
  *
  */
 const render = () => {
-  // TODO
+  const app = document.querySelector("#app");
+  app.innerHTML = `
+  <main>
+  <h1> Johnny's Puppy Bowl</h1>
+  <h3> brought to you by John + FullStack Academy </h3>
+  <section>
+    <h2>Puppy Roster:</h2>
+    <puppyList></puppyList>
+  </section>
+  <section id="selected">
+    <h2>Player stats</h2>
+    <selectedPuppy></selectedPuppy>
+  </section>
+  </section>
+        <form>
+            <label> Name: <label>
+            <input type="text" name="add" /> 
+            <label> Breed: <label>
+            <input type="text" name="add" />
+            <label> Status: <label>
+            <label> ImageURL: <label>
+            <input type="text" name="add" />
+            <button type="submit">Add Puppy</button>
+        </form>
+        </main>`
+
+  app.querySelector("puppyList").replaceWith(puppyList());
+  app.querySelector("selectedPuppy").replaceWith(SelectedPuppy());
 };
 
 /**
@@ -91,8 +189,10 @@ const render = () => {
  */
 const init = async () => {
   //Before we render, what do we always need?
-
+  await fetchAllPlayers();
   render();
 };
 
 init();
+
+
