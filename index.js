@@ -7,6 +7,7 @@ const API = "https://fsa-puppy-bowl.herokuapp.com/api/2605-FTB-ET-WEB-FT-John"
 //State
 let puppies = [];
 let selectedPuppy;
+let newPuppy = []
 ////////////////////////////
 
 /**
@@ -68,9 +69,21 @@ const fetchSinglePlayer = async (playerId) => {
  * new player object when you call it. How can we
  * create a new player object and then pass it to addNewPlayer()?
  */
-
+//talk to API to upload player
 const addNewPlayer = async (newPlayer) => {
-  //TODO
+  try {
+    await fetch(API + "/players", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPlayer),
+    });
+    await fetchAllPlayers();
+    render();
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 /**
@@ -85,7 +98,16 @@ const addNewPlayer = async (newPlayer) => {
  */
 
 const removePlayer = async (playerId) => {
-  //TODO
+  try {
+    await fetch(API + "/players/" + playerId, {
+      method: "DELETE",
+    });
+    selectedPuppy = undefined;
+    await fetchAllPlayers();
+    render();
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 
@@ -124,17 +146,53 @@ function SelectedPuppy (){
   const $puppy = document.createElement("section");
   $puppy.innerHTML = `
   <h3>${selectedPuppy.name} #${selectedPuppy.id}</h3>
-  <img src=${selectedPuppy.imageUrl}>
+  <img id="pic" src=${selectedPuppy.imageUrl}>
   <h4>Breed: ${selectedPuppy.breed}</h4>
   <h4>Status: ${selectedPuppy.status}</h4>
   <h4>TeamID: ${selectedPuppy.teamId}</h4>
   <button type="submit">Remove from Roster</button>
   `;
-  
 
+  const $delete = $puppy.querySelector("button");
+  $delete.addEventListener("click", () => removePlayer(selectedPuppy.id));
+
+
+  
   return $puppy;
 };
 
+function newPuppyForm() {
+  const $form = document.createElement("form");
+  $form.innerHTML = `
+            <label> Name
+            <input type="text" name="name" /> 
+            </label>
+            <label> Breed: 
+            <input type="text" name="breed" />
+            </label>
+            <label> Status: 
+            <select name="status">
+              <option value="Default">Select</option>
+              <option value="bench">Bench</option>
+              <option value="field">Field</option>
+              </select>
+              </label>
+              <label>ImageURL: </label>
+              <input type="text" name="imgUrl" />
+              <button type="submit">Add Puppy</buton>
+            `;
+  $form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData($form);
+    addNewPlayer({
+      name: data.get("name"),
+      breed: data.get("breed"),
+      status: data.get("status"),
+      imageUrl: data.get("imgUrl")
+    });
+  });
+  return $form
+};
 
 
 /**
@@ -156,44 +214,36 @@ function SelectedPuppy (){
 const render = () => {
   const app = document.querySelector("#app");
   app.innerHTML = `
+  <header>
+        <nav class="container">
+            <img class="flexItem2" src="trophy2.jpg">
+            <a class="flexItem3" >Home</a>
+            <a class="flexItem" >About</a>
+            <a class="flexItem" >How to Watch</a>
+            <a class="flexItem" >Contact</a>
+        </nav>
+    </header>
+  <div id="header">
+  <a class="title"> Johnny's Puppy Bowl</a>
+  </br>
+  <a class="subtitle"> brought to you by John + FullStack Academy </a>
+  </div>
   <main>
-  <h1> Johnny's Puppy Bowl</h1>
-  <h3> brought to you by John + FullStack Academy </h3>
   <section>
     <h2>Puppy Roster:</h2>
+    <div class="test">
     <puppyList></puppyList>
+    <newPuppyForm></newPuppyForm>
   </section>
   <section id="selected">
     <h2>Player stats</h2>
     <selectedPuppy></selectedPuppy>
   </section>
-  </section>
-        <form>
-            <label> Name: <label>
-            <input type="text" name="add" /> 
-            <label> Breed: <label>
-            <input type="text" name="add" />
-            <label> Status: <label>
-            <select name="status">
-              <option value="Default">Select</option>
-              <option value="Bench">Bench</option>
-              <option value="Field">Field</option>
-              </select>
-              <label> Prefered food: <label>
-              <select  name="food">
-                <option value="Default">Select</option>
-                <option value="Puppy Chow">Puppy Chow</option>
-                <option value="Mega Puppy Protein">Mega Puppy Protein</option>
-                <option value="Purinna ONE">Purinna One</option>
-              </select>
-              <label>ImageURL: </label>
-              <input type="text" name="imgUrl" />
-              <button type="submit">Add Puppy</buton>
-            
-        </form>
-        </main>`
+`;
 
+       
   app.querySelector("puppyList").replaceWith(puppyList());
+  app.querySelector("newPuppyForm").replaceWith(newPuppyForm());
   app.querySelector("selectedPuppy").replaceWith(SelectedPuppy());
 };
 

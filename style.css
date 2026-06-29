@@ -5,12 +5,85 @@ main {
 }
 
 h1{
-    color:blueviolet;
+    color:black;
+    background-color: cadetblue;
 }
+.container{
+    display: flex;
+    flex-direction: row;
+    background-color: cornflowerblue;
+    background-image: url(field.jpg);
+}
+
+.flexItem{
+    color:azure;
+    margin: 1rem;
+    padding: 1rem;
+    font: 1.5rem 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.flexItem2{
+    width: 200px;
+    height: 200px;
+}
+
+.flexItem3 {
+    
+    color: azure;
+    padding: 1rem;
+    margin-left: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font: 1.5rem 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    
+}
+
+.title{
+    font-size: 22pt;
+    background-color: chartreuse;
+}
+
+.subtitle{
+    font-size: 18pt;
+    background-color: chartreuse;
+}
+
 h2{
     color: goldenrod
 }
 
 .puppyList{
     border: 1px black;
+}
+
+form{
+    display:grid;
+    padding: 0.5rem;
+    
+}
+
+label{
+    display:grid;
+}
+ul.puppies{
+    border: 2px blue;
+}
+
+ul.puppies li{
+    font-size: 18pt;
+}
+
+
+#header{
+    background-color: cornflowerblue;
+}
+
+#pic{
+    width: 450px;
+    height: 400px;
+}
+
+main {
+  display: grid;
+  gap: 1rem;
 }
